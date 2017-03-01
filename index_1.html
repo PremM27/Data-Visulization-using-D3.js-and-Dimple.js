@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <script src="http://d3js.org/d3.v3.min.js">
+    </script>
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js">
+    </script>
+    <style>
+      h1 {
+        text-align: center;
+      }
+      #chartTitle {
+        width: 100%;
+        text-align: justify;
+        text-align: center;
+      }
+    </style>
+    <script type="text/javascript">
+      function draw(data) {
+      /*
+        D3.js setup code
+      */
+          var margin = 75,
+              width = 1280,
+              height = 720;
+          d3.select("body")
+            .append("h1")
+            .text("Visulization of Survivors per each Passenger Class, Gender and Sex")
+          var svg = d3.select("body", 900,600)
+            .append("svg")
+            .attr("width", width + margin)
+            .attr("height", height + margin)
+            .append('g')
+            .attr('class','chart');
+          var myChart = new dimple.chart(svg, data);
+          var x = myChart.addCategoryAxis('x', "PclassSex");
+          // var x = myChart.addCategoryAxis('x', "Pclass");
+          var y = myChart.addPctAxis('y', "Count");
+          // var y = myChart.addMeasureAxis('y', "Count");
+          y.title = "Passenger Count";
+          var s = myChart.addSeries("Survived", dimple.plot.bar);
+          myChart.addLegend(100, 50, 1085, 200, "right");
+          myChart.draw();
+        };
+
+    </script>
+</head>
+<body>
+    <script type="text/javascript">
+    /*
+    Use D3 to load the CSV file
+    and pass the contents of it to the draw function
+    */
+    d3.csv("clean.csv", draw);
+    </script>
+</body>
+</html>

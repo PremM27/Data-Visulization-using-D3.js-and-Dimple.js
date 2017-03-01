@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <!-- Load D3.js -->
+    <script src="http://d3js.org/d3.v3.min.js">
+    </script>
+    <!-- Load Dimple.js -->
+    <script src="http://dimplejs.org/dist/dimple.v2.0.0.min.js">
+    </script>
+    <style>
+      /*Set Text, Size, color style per Element*/
+      h1 {
+        text-align: center;
+        font-size:250%;
+        font-family:Georgia;
+      }
+      h2 {
+        text-align: left;
+        font-size:50%;
+        color:grey;
+      }
+      #chartTitle {
+        width: 100%;
+        text-align: justify;
+        text-align: center;
+      }
+    </style>
+    <script type="text/javascript">
+      function draw(data)
+      {
+      // D3.js setup code
+      var margin = 75,
+          width = 1280,
+          height = 720;
+      d3.select("body")
+        .append("h1")
+        // Title
+        .text("Visulization of Survival Status Rate per each Passenger Class and Gender")
+        .append("h2")
+        // Description
+        .text("This Visulization helps us understand the Survival Status Rate of the Passengers Per Passenger Class and gender in the Titanic. It can be observed that the Females from the PassengerClass 1 had a greater chance of Survival(96%) and Passengers of higher PassengerClass were given higher priority in allocation of the Life Boats.")
+      // Adding and Defining an SVG Element
+      var svg = d3.select("body", 900,600)
+        .append("svg")
+        .attr("width", width + margin)
+        .attr("height", height + margin)
+        .append('g')
+        .attr('class','chart');
+      var myChart = new dimple.chart(svg, data);
+      // Declaring Varible PclassSex on X-Axis and Defining the Axis as a Catrgorical Axis
+      var x = myChart.addCategoryAxis('x', "PclassSex");
+      // Declaring Varible PclassSex on X-Axisa nd Defining the Axis as a Percentage Axis
+      var y = myChart.addPctAxis('y', "Count");
+      // Set Labels
+      x.title = "Pclass";
+      y.title = "Survival Rate";
+      // Adding a new varible "Survived" to chart
+      var s = myChart.addSeries("Survived", dimple.plot.bar);
+      // Adding a Legend to the chart and Setting up its position co-ordinates
+      myChart.addLegend(100, 50, 1085, 200, "right");
+      // Draw
+      myChart.draw();
+      };
+    </script>
+</head>
+<body>
+    <script type="text/javascript">
+    //Use D3 to load the CSV file and pass the contents of it to the draw function
+    d3.csv("clean.csv", draw);
+    </script>
+</body>
+</html>
